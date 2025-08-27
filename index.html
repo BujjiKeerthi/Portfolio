@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            font-family: "Noto Serif Ahom", serif; 
+            scrollbar-width: 0px;
+            scroll-behavior: smooth;
+            
+        }
+        body{
+            overflow: hidden;
+        }
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            z-index: 1000;
+        }
+
+        .nav ul {
+            display: flex;
+            list-style: none;
+            color: white;
+            gap: 30px;
+        }
+
+        .nav ul a {
+            text-decoration: none;
+            color: black;
+        }
+
+        .btn {
+            background-color: black;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn1{
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .main{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            
+
+        }
+        .name{
+            font-size: 25px;
+            margin-bottom: 20px;
+            color: gray;
+            position: absolute;
+            left: center;
+            top: 20%;
+            animation:scale 2s ease-in-out forwards;
+        }
+        .head{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            height: 100vh;
+            bottom: 10px;
+        }
+
+        .role1{
+            -webkit-text-stroke: 1px black;
+            color: white;
+            font-size: 150px;
+            margin-left: 60px;
+            font-family: 'Anton';
+
+            z-index: 1;
+            animation: scale 2s ease-in-out forwards;
+            
+        }
+        .role1:hover{
+            color: black;
+        }
+
+        .role2{
+            position: relative;
+            -webkit-text-stroke: 1px black;
+            color: white;
+            font-size: 150px;
+            animation: scale 2s ease-in-out forwards;
+
+        }
+
+        .role2:hover {
+            color: black;
+            z-index: 1;
+        }
+
+        .head img {
+            position: absolute;
+            width: 90%;
+            height: 100vh;
+            bottom: 11%;
+            object-fit: cover;
+            animation: scale 3s ease-in-out forwards;
+        }
+
+        @keyframes scale {
+            0% {
+                transform: scale(0.8);
+            }
+            100% {
+                transform: scale(1.1);
+            }
+        }
+        .role1:hover span{
+            color: transparent;
+            -webkit-text-stroke:0.5px white;
+
+        }
+        .role2:hover span{
+            color: transparent;
+            -webkit-text-stroke:0.5px white;
+
+        }
+        .location {
+            position: absolute;
+            color: gray;
+            left: 12%;
+            top: 82%;
+            font-size: 20px;
+            animation: scale 2s ease-in-out forwards;
+        }
+
+        .nav ul a:active {
+            animation: slide 0.5s forwards;
+        }
+         @keyframes slide {
+            0% {
+                background-color: black;
+                opacity: 1;
+            }
+            50% {
+                background-color: rgb(15, 14, 14);
+                opacity: 0.5;                   
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 0;
+            }
+        }
+
+      
+    </style>
+</head>
+
+<body>
+    <div class="nav-bar">
+        <div></div>
+        <div class="btn1">
+            <div class="nav">
+                <ul>
+                    <li><a href="./index.html">Home</a></li>
+                    <li><a href="./About.html">About</a></li>
+                    <li><a href="./projects.html">Projects</a></li>
+                </ul>
+
+            </div>
+            <div class="btn">Hello@keerthi</div>
+        </div>
+    </div>
+
+
+    <div class="main">
+        <p class="name">
+            Hi my name is Keerthi and I am a full-stack developer.
+        </p>
+        <div class="head">
+        <h1 class="role1">Web<span class="text">de</span>signer</h1>
+        <h1 class="role2">&Jav<span class="text">aDev</span>eloper</h1>
+        <img src="./img/keerthi.png" alt="">
+        </div>
+        <p class="location">BASED IN BENGALURU, INDIA.</p>
+    </div>
+
+
+</body>
+
+</html>
