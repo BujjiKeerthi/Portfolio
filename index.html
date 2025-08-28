@@ -68,6 +68,7 @@
             position: absolute;
             left: center;
             top: 20%;
+            z-index: 10;
             animation:scale 2s ease-in-out forwards;
         }
         .head{
@@ -78,6 +79,7 @@
             position: relative;
             height: 100vh;
             bottom: 10px;
+            perspective: 1000px;
         }
 
         .role1{
@@ -121,9 +123,11 @@
         @keyframes scale {
             0% {
                 transform: scale(0.8);
+                 /* rotate: 50deg; */
             }
             100% {
                 transform: scale(1.1);
+               
             }
         }
         .role1:hover span{
@@ -145,23 +149,6 @@
             animation: scale 2s ease-in-out forwards;
         }
 
-        .nav ul a:active {
-            animation: slide 0.5s forwards;
-        }
-         @keyframes slide {
-            0% {
-                background-color: black;
-                opacity: 1;
-            }
-            50% {
-                background-color: rgb(15, 14, 14);
-                opacity: 0.5;                   
-            }
-            100% {
-                transform: translateY(0);
-                opacity: 0;
-            }
-        }
 
       
     </style>
@@ -174,7 +161,7 @@
             <div class="nav">
                 <ul>
                     <li><a href="./index.html">Home</a></li>
-                    <li><a href="./About.html">About</a></li>
+                    <li><a href="./About.html">Resume`</a></li>
                     <li><a href="./projects.html">Projects</a></li>
                 </ul>
 
