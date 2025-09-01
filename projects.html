@@ -1,353 +1,164 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            overflow-y: hidden;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Document</title>
+  <style>
+    /* Base reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        .main {
-            background-color: white;
-        }
+    /* Lock the page to the viewport */
+    html, body { height: 100%; overflow: hidden; }
 
-        .over {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: black;
-            z-index: 10000;
-            animation: slide 2s forwards;
-            overflow: hidden;
-        }
+    /* Fullscreen stage that clips all children */
+    .stage {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;         /* <-- hard clip */
+      background: white;
+      z-index: 0;
+      height: 100vh;
+    }
+    /* Use dynamic VH where supported to avoid mobile URL-bar jumps */
+    @supports (height: 100dvh) {
+      .stage { height: 100dvh; }
+    }
 
-        @keyframes slide {
-            0% {
-                left: 0;
-                /* opacity: 1; */
-            }
+    /* Optional top nav */
+    .nav-bar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 20px;
+      z-index: 10;  /* above stage content */
+    }
+    .nav ul { display: flex; list-style: none; gap: 30px; }
+    .nav a { text-decoration: none; color: black; }
+    .btn { background:black; color:#fff; padding:10px 20px; border:none; border-radius:5px; cursor:pointer; }
+    .btn1 { display:flex; align-items:center; gap:30px; }
 
-            100% {
-                left: 100%;
-                /* opacity: 0; */
-            }
+    /* Intro overlay */
+    .over {
+      position: fixed; inset: 0; background:black; z-index: 10000;
+      animation: slide 2s forwards;
+      overflow: hidden;
+    }
+    @keyframes slide { 0%{ left:0; } 100%{ left:100%; } }
 
-            /* moves fully to the right */
-        }
+    /* Timeline area fills the stage and clips all absolute children */
+    .road-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex; justify-content: center;
+      overflow: hidden;   /* <-- clip */
+      z-index: 1;
+    }
 
-        body {
-            overflow-y: hidden;
-            /* stop vertical scrollbar */
-        }
+    .road {
+      position: absolute;
+      top: 10%;
+      height: 80%;
+      width: 10px;
+      background: black;
+    }
 
+    /* Points */
+    .point1, .point2, .point3, .point4, .point5 {
+      position: absolute;
+      width: 30px; height: 10px; border-radius: 50%;
+      background: rgb(14,0,0);
+      left: 50%; transform: translate(-50%, -50%);
+      animation: see 0.6s ease-out forwards;
+    }
+    .point1 { top: 10%; }
+    .point2 { top: 30%; }
+    .point3 { top: 50%; }
+    .point4 { top: 70%; }
+    .point5 { top: 88%; } /* <= keep safely inside */
 
+    /* Labels/images – now clipped because they’re inside road-container */
+    .p1, .p2, .p3, .p4, .p5 {
+      position: absolute; left: 50%;
+      transform: translate(-20%, -50%);
+      animation: see 0.6s ease-out forwards;
+      text-align: left; line-height: 1.2;
+    }
+    .p1 { top: 11%; }
+    .p2 { top: 31%; transform: translate(10%, -50%); }
+    .p3 { top: 51%; }
+    .p4 { top: 71%; transform: translate(10%, -50%); }
+    .p5 { top: 89%; } /* <= paired with point5 */
 
-        .nav-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 0;
+    .p1 img, .p2 img, .p3 img, .p4 img, .p5 img {
+      width: 10%; height: auto; display: block;
+      z-index: -1;
+    }
 
+    @keyframes see { from { opacity: 0; } to { opacity: 1; } }
 
-        }
-
-        .nav ul {
-            display: flex;
-            list-style: none;
-            color: white;
-            gap: 30px;
-        }
-
-        .nav ul a {
-            text-decoration: none;
-            color: black;
-
-        }
-
-        .btn {
-            background-color: black;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .btn1 {
-            display: flex;
-            gap: 30px;
-            align-items: center;
-        }
-
-
-        .road-container {
-            display: flex;
-            justify-content: center;
-            overflow-x: hidden;
-            z-index: -19;
-        }
-
-        .road {
-            position: absolute;
-            height: 80vh;
-            width: 10px;
-            background-color: black;
-
-            top: 10%;
-            overflow: hidden;
-
-        }
-
-        .point1 {
-            position: absolute;
-            height: 10px;
-            width: 30px;
-            background-color: rgb(14, 0, 0);
-            border-radius: 50%;
-            top: 10%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation: delay 1s ease-in-out forwards;
-        }
-
-        .p1 {
-            position: absolute;
-            top: 11%;
-            left: 50%;
-            transform: translate(-20%, -50%);
-            animation: delay 1s ease-in-out forwards;
-        }
-
-        .p1 img {
-            width: 10%;
-            height: 10%;
-            animation: delay 1s ease-in-out   forwards;
-            z-index: -10;
-        }
-
-        .point2 {
-            position: absolute;
-            height: 10px;
-            width: 30px;
-            background-color: rgb(14, 0, 0);
-            border-radius: 50%;
-            top: 30%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            overflow-y: hidden;
-            animation: delay 5s ease-in-out   forwards;
-        }
-
-        .p2 {
-            position: absolute;
-            top: 31%;
-            left: 50%;
-            transform: translate(10%, -50%);
-            animation: delay 5s ease-in-out   forwards;
-        }
-
-        .p2 img {
-            width: 10%;
-            height: 10%;
-            animation: delay 5s ease-in-out   forwards;
-            z-index: -10;
-        }
-
-        .point3 {
-            position: absolute;
-            height: 10px;
-            width: 30px;
-            background-color: rgb(14, 0, 0);
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            overflow-y: hidden;
-            animation: delay 5s ease-in-out   forwards;
-        }
-
-        .p3 {
-            position: absolute;
-            top: 51%;
-            left: 50%;
-            transform: translate(-20%, -50%);
-            animation: delay 5s ease-in-out  forwards;
-        }
-
-        .p3 img {
-            width: 10%;
-            height: 10%;
-            animation: delay 5s ease-in-out  forwards;
-            z-index: -10;
-        }
-
-        .point4 {
-            position: absolute;
-            height: 10px;
-            width: 30px;
-            background-color: rgb(14, 0, 0);
-            border-radius: 50%;
-            top: 70%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            overflow-y: hidden;
-            animation: delay 7s ease-in-out  forwards;
-        }
-
-        .p4 {
-            position: absolute;
-            top: 71%;
-            left: 50%;
-            transform: translate(10%, -50%);
-            animation: delay 7s ease-in-out  forwards;
-        }
-
-        .p4 img {
-            width: 10%;
-            height: 10%;
-            animation: delay 7s ease-in-out   forwards;
-            z-index: -10;
-        }
-
-        .point5 {
-            position: absolute;
-            height: 10px;
-            width: 30px;
-            background-color: rgb(14, 0, 0);
-            border-radius: 50%;
-            top: 92%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            overflow-y: hidden;
-            animation: delay 9s ease-in-out   forwards;
-        }
-
-        .p5 {
-            position: absolute;
-            top: 91%;
-            left: 50%;
-            transform: translate(-20%, -50%);
-            animation: delay 9s ease-in-out   forwards;
-        }
-
-        .p5 img {
-            width: 10%;
-            height: 10%;
-            animation: delay 9s ease-in-out   forwards;
-            z-index: -10;
-
-        }
-
-        @keyframes delay {
-            0% {
-                opacity: 0;
-            }
-
-            100% {
-                opacity: 1;
-            }
-        }
-
-        .p1,
-        .p2,
-        .p3,
-        .p4,
-        .p5,
-        .point1,
-        .point2,
-        .point3,
-        .point4,
-        .point5 {
-            animation: see 3s ease-in-out   forwards;
-        }
-
-        @keyframes see {
-            0% {
-                opacity: 0;
-            }
-
-            100% {
-                opacity: 1;
-            }
-        }
-    </style>
-
+    /* Mobile tweaks */
+    @media (max-width: 426px) {
+      .point1, .point2, .point3, .point4, .point5 { width: 20px; height: 20px; }
+      .p1, .p3, .p5 { margin-right: -70%; }
+      .p2 img, .p4 img { width: 30%; }
+      .p1 img, .p3 img, .p5 img { width: 18%; } /* a bit larger on small screens */
+      .point5 { top: 89%; }
+      .p5 { top: 89%; }
+    }
+  </style>
 </head>
-
 <body>
-    <div class="over">
+  <div class="over"></div>
 
+  <div class="nav-bar">
+    <div></div>
+    <div class="btn1">
+      <div class="nav">
+        <ul>
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./About.html">Resum`</a></li>
+          <li><a href="./projects.html">Projects</a></li>
+        </ul>
+      </div>
+      <div class="btn">Hello@keerthi</div>
     </div>
-    <div class="main">
+  </div>
 
-
-
-        <div class="nav-bar">
-            <div></div>
-            <div class="btn1">
-                <div class="nav">
-                    <ul>
-                        <li><a href="./index.html">Home</a></li>
-                        <li><a href="./About.html">Resum`</a></li>
-                        <li><a href="./projects.html">Projects</a></li>
-                        <!-- <li><a href="./contact.html">Contact</a></li> -->
-                    </ul>
-
-                </div>
-                <div class="btn">Hello@keerthi</div>
-            </div>
-        </div>
-    </div>
-
+  <!-- Everything visual is clipped inside this stage -->
+  <section class="stage">
     <div class="road-container">
-        <div class="road"></div>
+      <div class="road"></div>
 
-        <div class="point1"></div>
-        <div class="point2"></div>
-        <div class="point3"></div>
-        <div class="point4"></div>
-        <div class="point5"></div>
+      <div class="point1"></div>
+      <div class="point2"></div>
+      <div class="point3"></div>
+      <div class="point4"></div>
+      <div class="point5"></div>
 
-
-    </div>
-
-    <div class="p1">
-
+      <div class="p1">
         <img src="img/i1.png" alt="">
         <p>PG WEBSITE</p>
-    </div>
-
-    <div class="p2">
+      </div>
+      <div class="p2">
         <img src="img/i1.png" alt="">
         <p>PG WEBSITE</p>
-    </div>
-
-    <div class="p3">
+      </div>
+      <div class="p3">
         <img src="img/i1.png" alt="">
         <p>PG WEBSITE</p>
-    </div>
-    <div class="p4">
+      </div>
+      <div class="p4">
         <img src="img/i1.png" alt="">
         <p>PG WEBSITE</p>
-    </div>
-
-    <div class="p5">
+      </div>
+      <div class="p5">
         <img src="img/i1.png" alt="">
         <p>PG WEBSITE</p>
+      </div>
     </div>
-
+  </section>
 </body>
-
 </html>
